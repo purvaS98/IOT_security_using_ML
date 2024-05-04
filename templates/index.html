@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('../static/pic1.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Keeps the background image fixed while scrolling */
+            margin: 0;
+            padding: 0;
+            opacity: 0.95;
+        }
+        .container-fluid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Makes the container take up the full viewport height */
+        }
+        .jumbotron {
+            background-color: rgba(255, 255, 255, 0.8); /* Adds a semi-transparent white background */
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 800px; /* Adjust width as needed */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+        }
+        h1, h4 {
+            text-align: center;
+        }
+        .formdiv {
+            background-color: rgba(228, 255, 255, 0.925); /* Slightly less transparent white background */
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+            margin-top: 20px; /* Add some space between sections */
+        }
+        #fileNameDisplay, .form-group, .custom-file {
+            margin-bottom: 25px;
+        }
+        .btn-primary, .btn-success {
+            width: 100%;
+        }
+        .btn-primary :hover{
+            width: 100%;
+        }
+        .alert {
+            margin-top: 10px;
+        }
+        
+       
+    </style>
+    <script>
+         document.addEventListener('DOMContentLoaded', function() {
+        // Select the file input element
+        var fileInput = document.getElementById('testDataFile');
+        
+        // Add event listener for when a file is selected
+        fileInput.addEventListener('change', function() {
+            // Get the selected file
+            var selectedFile = fileInput.files[0];
+            //alert(selectedFile);
+            // Check if a file is selected
+            if (selectedFile) {
+                // Display the file name
+                var fileNameDisplay = document.getElementById('fileNameDisplay');
+                fileNameDisplay.textContent = selectedFile.name;
+                
+            }
+        });
+    });
+  
+       
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="jumbotron bg-white d-flex flex-column">
+            <h1>Welcome to the IOT intrusion detection website!</h1><br/>
+            <h4>Let's see if your IOT network request is secure !</h4>
+            <hr>
+            
+            <div class="formdiv">
+                <form action="/upload" method="POST" id="uploadForm" enctype="multipart/form-data">
+                    
+                    <div class="custom-file" id="custom-file">
+                        <input type="file" class="custom-file-input" id="testDataFile" aria-describedby="myInput" name="testDataFile" required>
+                        <label class="custom-file-label" for="testDataFile">Choose file</label>
+                        <span id="fileNameDisplay"></span>
+                    </div>
+                    <span id="fileNameDisplay"></span>
+                    
+                    <div class="form-group">
+                        <button type="submit" id="preprocessButton" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Preprocess the data</button>
+                    </div>
+                    
+                    
+                    
+                </form>
+
+            <div>
+                {% if msg %}
+                <div class="alert alert-success" role="alert">
+                    {{msg}}
+        </div>
+                    {% if processed_data is not none %}
+                        <!-- Processed data is not None, display the form -->
+                        <p><em>Please click on Predict button to see the results.</em></p>
+                        <form action="/predict" method="post">
+                            <!-- Assuming we have 3 input fields -->
+                            <input type="file" class="d-none" name="processed_data" value="{{ processed_data }}">        
+                            <button type="submit" id="predictButton" class="btn btn-success">Predict</button>
+                        </form>
+                    {% else %}
+                        <!-- Processed data is None, display an error message -->
+                        <div class="alert alert-danger" role="alert">
+                            Error: Something went wrong during data processing. Please try again.
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div></div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

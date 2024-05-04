@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+        main {
+            padding: 20px;
+        }
+        section {
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #333;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>About Us</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#ml-model">ML Model Classification Techniques</a></li>
+            <li><a href="#performance-metrics">Performance Metrics</a></li>
+            <li><a href="#frontend-website">Frontend Website</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="ml-model">
+            <h2>ML Model Classification Techniques</h2>
+            <p>We selected around 3 classifiers to build, train, and test the model. At the end, after evaluating the results from individual classifiers, Stacking Classifier is used to create an ensemble model to further improve model performance. The models were then saved on the disk using the pickle function.</p>
+            <ul>
+                <li><strong>Naïve Bayes:</strong> This algorithm works best for binary or multi-class classification problems with categorical data. For our model, we had used a Gaussian Bayes model which assumes the input features follow the normal distribution.</li>
+                <li><strong>Decision Trees:</strong> This algorithm is easy, fast, and operates well on large datasets. It requires less computational power and is easy to visualize. The predictions on the target feature are made on the basis of the decision rules inferred from the input variables.</li>
+                <li><strong>Random Forest:</strong> It is an ensemble learning technique which uses multiple decision trees to make the predictions. The prediction is made by aggregating the results of individual classifiers.</li>
+            </ul>
+            <h3>Model validation</h3>
+            <p>To validate the model’s performance, we have used k-fold cross-validation technique on the dataset to help detect overfitting. First, the entire dataset is divided into the k folds and for each unique fold (holdout data), the remaining data is taken as training data.</p>
+            <p>Then the model is fit on the training set and evaluated on the holdout data. We have taken the number of folds as 5 (i.e., cv=5), which means the data will be split using 5 folds of train and test data. During each fold, one fold is considered for testing and rest will be training and so on.</p>
+        </section>
+        <section id="performance-metrics">
+            <h2>Performance Metrics</h2>
+            <p>Once the model was ready, we saved our individual and ensemble models and analyzed them using performance metrics. The performance metrics used to evaluate and visualize the results of the models are as follows:</p>
+            <ol>
+                <li><strong>Accuracy:</strong> It defines the percentage of correct predictions made by the classifier to the total number of the predictions. The accuracy value of the model should be close to 100%.</li>
+                <li><strong>Precision:</strong> It measures how many correct predictions made by the classifiers are actually correct. The precision score &gt; 0.5 suggests that the model is fair.</li>
+                <li><strong>Recall:</strong> It is also termed as the sensitivity of the model and explains how many actual correct predictions were made by the classifier.</li>
+                <li><strong>F1 score:</strong> This score is a combination of Precision and recall score. The score will be in between 0 to 1.</li>
+                <li><strong>Confusion matrix:</strong> It is a matrix that compares the predictions of each class such as True positive, False positive, True negative, and False negative for each feature set.</li>
+                <li><strong>AUC ROC curve:</strong> It is used to visualize the results of the model. It is a probability curve that plots the area under the ROC curve, which distinguishes between the classes. The value of AUC should be close to 1.0, which suggests that the model is perfectly able to distinguish true and false cases.</li>
+            </ol>
+            <h3>Performance metrics for Attack models</h3>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Accuracy</th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Random Forest</td>
+                        <td>0.9950</td>
+                        <td>0.9950</td>
+                        <td>0.9950</td>
+                    </tr>
+                    <tr>
+                        <td>Decision Tree</td>
+                        <td>0.917</td>
+                        <td>0.917</td>
+                        <td>0.9</td>
+                    </tr>
+                    <tr>
+                        <td>Gaussian Naive Bayes</td>
+                        <td>0.8</td>
+                        <td>0.87</td>
+                        <td>0.8</td>
+                    </tr>
+                    <tr>
+                        <td>Ensemble</td>
+                        <td>0.8</td>
+                        <td>0.87</td>
+                        <td>0.88</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Performance metrics for Sub Attack type models</h3>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Accuracy</th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Random Forest</td>
+                        <td>0.903</td>
+                        <td>0.925</td>
+                        <td>0.903</td>
+                    </tr>
+                    <tr>
+                        <td>Decision Tree</td>
+                        <td>0.902</td>
+                        <td>0.91</td>
+                        <td>0.902</td>
+                    </tr>
+                    <tr>
+                        <td>Gaussian Naive Bayes</td>
+                        <td>0.61</td>
+                        <td>0.5</td>
+                        <td>0.61</td>
+                    </tr>
+                    <tr>
+                        <td>Ensemble</td>
+                        <td>0.7</td>
+                        <td>0.77</td>
+                        <td>0.7</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="frontend-website">
+            <h2>Frontend Website</h2>
+            <p>The web application module consists of the following sections to render a simple, user-friendly interface for IoT threat prediction:</p>
+            <ul>
+                <li><strong>Imports:</strong> The necessary libraries and modules, including Flask, render_template, request, pandas, pickle, and LabelEncoder, are imported to facilitate web development and machine learning functionalities.</li>
+                <li><strong>Flask App Initialization:</strong> An instance of the Flask application is created using Flask(__name__).</li>
+                <li><strong>Model Loading:</strong> Trained machine learning models for classifying attacks and subattacks are loaded into memory using the pickle.load() function.</li>
+                <li><strong>Data Preprocessing:</strong> A function preprocess_data() is defined to preprocess the uploaded data and prepare it for prediction. This function replaces the actual preprocessing logic used in the system.</li>
+                <li><strong>Label Encoding:</strong> The label_data() function is implemented to encode categorical features using LabelEncoder from scikit-learn. This function prepares the label encoders for later use in decoding predictions.</li>
+                <li><strong>Route Definitions:</strong>
+                    <ul>
+                        <li><strong>Index Route:</strong> The root route ('/') renders the index.html template, which contains the file upload form.</li>
+                        <li><strong>Upload Route:</strong> The /upload route handles file uploads, preprocesses the data, and saves the preprocessed data to a CSV file.</li>
+                        <li><strong>Prediction Route:</strong> The /predict route processes the preprocessed data, performs predictions using the loaded machine learning models, and renders the results.html template with the prediction outcomes.</li>
+                    </ul>
+                </li>
+                <li><strong>Model Prediction:</strong> Predictions are made using the loaded machine learning models, and the results are displayed in a tabular format.</li>
+                <li><strong>Result Rendering:</strong> Based on the prediction outcomes, appropriate messages are generated to inform users about the security status of their requests.</li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; All rights reserved.</p>
+    </footer>
+</body>
+</html>
+{% endblock %}

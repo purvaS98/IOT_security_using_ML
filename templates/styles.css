@@ -1,0 +1,5 @@
+body {
+    background-image: url('../static/pic1.jpg');
+    background-size: cover; /* Adjusts the background size to cover the entire viewport */
+    /* Add any other background properties as needed */
+}

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Prediction Result</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+        }
+
+        .jumbotron {
+            border-radius: 20px; /* Round corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+            margin: 20px auto; /* Center align */
+            max-width: 70vw;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da; /* Danger color */
+            border-color: #f5c6cb; /* Danger border color */
+            color: #721c24; /* Danger text color */
+        }
+
+        .alert-success {
+            background-color: #d4edda; /* Success color */
+            border-color: #c3e6cb; /* Success border color */
+            color: #155724; /* Success text color */
+        }
+
+    </style>
+</head>
+<body>
+    {%if result_flag == 1 %}
+    <div class="jumbotron jumbotron-fluid alert  alert-danger">  
+        <div class="container">
+            <div class="d-inline p-2"><img src="../static/wrong.png" style="width: 150px; height: 150px;"></div>   
+            <div class="d-inline p-2"><h1 class="display-4 ">{{result_msg}} </h1></div>
+            
+        </div>
+        
+    </div>
+    {%else%}
+    <div class="jumbotron jumbotron-fluid alert  alert-success">  
+        <div class="container">    
+            <div class="d-inline p-2"><img src="../static/check.png" style="width: 150px; height: 150px;"></div>   
+            <div class="d-inline p-2"><h1 class="display-4 ">{{result_msg}} </h1></div>
+            
+        </div>
+        
+    </div>
+    {%endif%}
+
+    <!-- Graph displays -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div id="graph1"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div id="graph2"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for the graph
+        var data = [
+            { Model: 'Random Forest', Accuracy: 0.999950, Precision: 0.979950, Recall: 0.989950 },
+            { Model: 'Decision Tree', Accuracy: 0.999917, Precision: 0.989917, Recall: 0.989917 },
+            { Model: 'Gaussian Naive Bayes', Accuracy: 0.800800, Precision: 0.870254, Recall: 0.800800 },
+            { Model: 'Ensemble Model', Accuracy: 0.800807, Precision: 0.870264, Recall: 0.800807 }
+            ];
+
+            // Extracting data for x-axis and y-axis
+            var models = data.map(item => item.Model);
+            var accuracy = data.map(item => item.Accuracy);
+            var precision = data.map(item => item.Precision);
+            var recall = data.map(item => item.Recall);
+
+            // Create traces for the graph
+            var trace1 = {
+                x: models,
+                y: accuracy,
+                type: 'bar',
+                name: 'Accuracy'
+            };
+            var trace2 = {
+                x: models,
+                y: precision,
+                type: 'bar',
+                name: 'Precision'
+            };
+            var trace3 = {
+                x: models,
+                y: recall,
+                type: 'bar',
+                name: 'Recall'
+            };
+            var graphData = [trace1, trace2, trace3];
+
+            // Layout options to customize the y-axis scale
+            var layout = {
+                title: 'Performance analysis for Attack models',
+                yaxis: {
+                    range: [0.70, 1], // Customize the range of values displayed on the y-axis
+                    tickvals: [0.7, 0.75, 0.80, 0.82, 0.84, 0.86, 0.88, 0.90, 0.92,0.94,0.96 ,0.98, 1.0 ],// Specify the tick values
+                    ticktext: ['0.7','0.75','0.8','0.82', '0.84', '0.86', '0.88', '0.90', '0.92', '0.94', '0.96', '0.98', '1.0'], // Specify the text for the tick values
+                }
+            };
+            // Create the plot
+            Plotly.newPlot('graph1', graphData, layout);
+
+
+
+        //graph for subattack 
+        var data2 = [
+        { Model: 'Random Forest', Accuracy: 0.903992, Precision: 0.925823, Recall: 0.903992 },
+        { Model: 'Decision Tree', Accuracy: 0.902421, Precision: 0.916083, Recall: 0.902421 },
+        { Model: 'Gaussian Naive Bayes', Accuracy: 0.619497, Precision: 0.533294, Recall: 0.619497 },
+        { Model: 'Ensemble Model', Accuracy: 0.700807, Precision: 0.770264, Recall: 0.700807 }
+            ];
+
+            // Extracting data for the second graph
+            var models2 = data2.map(item => item.Model);
+            var accuracy2 = data2.map(item => item.Accuracy);
+            var precision2 = data2.map(item => item.Precision);
+            var recall2 = data2.map(item => item.Recall);
+
+            // Create traces for the second graph
+            var trace4 = {
+                x: models2,
+                y: accuracy2,
+                type: 'bar',
+                name: 'Accuracy'
+            };
+            var trace5 = {
+                x: models2,
+                y: precision2,
+                type: 'bar',
+                name: 'Precision'
+            };
+            var trace6 = {
+                x: models2,
+                y: recall2,
+                type: 'bar',
+                name: 'Recall'
+            };
+            var graphData2 = [trace4, trace5, trace6];
+
+            // Layout options for the second graph
+            var layout2 = {
+                title: 'Performance analysis for Sub-Attack models',
+                yaxis: {
+                    range: [0.5, 1], // Customize the range of values displayed on the y-axis
+                    tickvals: [0.5, 0.55,0.6,0.65, 0.7, 0.75, 0.8, 0.85, 0.90, 0.95, 1.0 ],// Specify the tick values
+                    ticktext: ['0.5','0.55','0.6','0.65','0.7', '0.75','0.8', '0.85', '0.90', '1.0'], // Specify the text for the tick values
+                }
+            };
+
+            // Create the second plot
+            Plotly.newPlot('graph2', graphData2, layout2);
+    </script>
+</body>
+</html>
+{% endblock %}
